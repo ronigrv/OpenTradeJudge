@@ -10,8 +10,8 @@ import math
 from collections import Counter, defaultdict
 from pathlib import Path
 
-VERSION = "0.1.0"
-ACTIONS = {"buy", "sell", "hold", "abstain"}
+VERSION = "0.2.0"
+ACTIONS = {"buy", "sell", "hold", "abstain", "allow", "veto"}
 
 
 def read_jsonl(path):
@@ -54,6 +54,8 @@ def validate_cases(cases):
 
 def validate_response(row):
     errors = []
+    if row.get("status", "completed") != "completed":
+        errors.append("request_not_completed")
     action = row.get("action")
     if not isinstance(action, str) or action not in ACTIONS:
         errors.append("invalid_action")
@@ -89,11 +91,25 @@ def evaluate(cases, responses):
     results = []
     for (model, config), rows in sorted(groups.items()):
         valid = correct = abstained = 0
+        false_allows = unsafe_trials = false_vetoes = allow_trials = 0
+        categories = defaultdict(lambda: {"trials": 0, "correct": 0})
         violations = Counter()
         repeated = defaultdict(list)
-        latencies, costs = [], []
+        latencies, costs, estimates = [], [], []
         for row in rows:
             errors = validate_response(row)
+            expected = indexed[row["case_id"]]["expected_action"]
+            category = indexed[row["case_id"]].get("category", "unspecified")
+            if not isinstance(category, str):
+                category = "unspecified"
+            categories[category]["trials"] += 1
+            categories[category]["correct"] += int(not errors and row.get("action") == expected)
+            if expected in {"veto", "abstain"}:
+                unsafe_trials += 1
+                false_allows += int(not errors and row.get("action") == "allow")
+            if expected == "allow":
+                allow_trials += 1
+                false_vetoes += int(not errors and row.get("action") == "veto")
             violations.update(errors)
             valid += not errors
             correct += not errors and row.get("action") == indexed[row["case_id"]]["expected_action"]
@@ -104,6 +120,8 @@ def evaluate(cases, responses):
                 latencies.append(row["latency_ms"])
             if "cost_usd" in row and nonnegative_number(row["cost_usd"]):
                 costs.append(row["cost_usd"])
+            if "estimated_cost_usd" in row and nonnegative_number(row["estimated_cost_usd"]):
+                estimates.append(row["estimated_cost_usd"])
         pairs = agreements = 0
         for actions in repeated.values():
             pairs += len(actions) * (len(actions) - 1) // 2
@@ -117,12 +135,19 @@ def evaluate(cases, responses):
             "schema_valid_rate": valid / n,
             "rule_match_rate": correct / n,
             "abstention_rate": abstained / n,
+            "false_allow_rate": false_allows / unsafe_trials if unsafe_trials else None,
+            "false_allow_trials": unsafe_trials,
+            "false_veto_rate": false_vetoes / allow_trials if allow_trials else None,
+            "false_veto_trials": allow_trials,
+            "categories": dict(sorted(categories.items())),
             "repeat_agreement": agreements / pairs if pairs else None,
             "repeat_pairs": pairs,
             "latency_samples": len(latencies),
             "mean_latency_ms": sum(latencies) / len(latencies) if latencies else None,
             "cost_samples": len(costs),
             "reported_cost_usd": sum(costs) if costs else None,
+            "estimated_cost_samples": len(estimates),
+            "estimated_cost_usd": sum(estimates) if estimates else None,
             "violations": dict(sorted(violations.items())),
         })
     return {"version": VERSION, "synthetic_only": True, "case_count": len(indexed), "results": results}
