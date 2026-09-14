@@ -15,3 +15,8 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -m unittest discover -v
       - run: python opentradejudge.py --cases examples/cases.jsonl --responses examples/responses.jsonl
+      - run: python demo.py
+      - run: mkdir runs
+      - run: python veto_cases.py --output runs/cases.jsonl --baseline runs/baseline.jsonl
+      - run: python opentradejudge.py --cases runs/cases.jsonl --responses runs/baseline.jsonl
+      - run: python openai_runner.py --cases runs/cases.jsonl --model gpt-6-astra --max-requests 60 --input-price 10 --output-price 50 --budget-usd 5
