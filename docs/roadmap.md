@@ -1,30 +1,33 @@
 # Development milestones
 
-These are proposed deliverables, not completed experiments.
+## Completed in v0.2
 
-## Baseline
+- Dependency-free offline scorer and CLI, maintaining v0.1 fixture compatibility.
+- False-allow/false-veto metrics and per-family counts for veto evaluations.
+- A deterministic 60-case generator across ten synthetic scenario families.
+- Opt-in Responses API adapter, preflight planning, request/output caps, no retries,
+  failure recording, local result persistence, and separately labeled cost estimates.
+- Executable and intentionally faulty baselines with a reproducible simulation report.
+- Tests and CI, including mocked HTTP tests. No API key is required for CI.
 
-Shipped: dependency-free offline scorer, four synthetic cases, handwritten demo
-outputs, input fingerprints, unit tests, and documented metric definitions.
+## Next: first live pilot
 
-## First development cycle
+No live model experiment has run. Proposed pilot: 60 cases x 2 configurations x
+3 repeats = 360 calls, split into separately budgeted runs. Begin with a much
+smaller smoke test to verify access and usage accounting before running the full
+pilot. The model, current prices, and request/token limits must be chosen explicitly.
+Publish failures, coverage, actual billed cost where available, and limitations.
 
-- Grow to at least 50 independently reviewed synthetic cases across arithmetic
-  boundaries, missing data, contradictory context, and explicit abstention.
-- Add a mock-tested opt-in OpenAI adapter with bounded requests and output tokens.
-- Preserve failed trials and distinguish transport failures from malformed output.
-- Use Codex for test development, maintenance, documentation, and code review;
-  keep human review of changes and benchmark labels.
+## Strengthen public usefulness
 
-## First public experiment
+- Seek independent feedback on case coverage, labels, and usability.
+- Add new families and held-out cases rather than merely increasing repetitions.
+- Add case-level uncertainty estimates and clearer comparison artifacts.
+- Explore synthetic charts and confidence calibration only after the baseline.
 
-Proposed pilot: 50 cases x 2 model configurations x 3 repeats = 300 calls.
-Measure actual cost and failure patterns before expanding. Publish methodology,
-configuration metadata, aggregate results, and limitations. Model selection and
-token budgets will be set before execution; no fixed dollar estimate is claimed.
+## Proposed credit use
 
-## Later work
-
-Only after the pilot, consider more cases, synthetic chart inputs, uncertainty
-estimation, and confidence calibration. Prioritize reproducibility and external
-feedback over a large unvalidated benchmark.
+Credits would support public toolkit development, tests, code review, documentation,
+and reproducible evaluations. A private application may use the toolkit without
+publishing its internals, but that does not establish eligibility to spend grant
+credits on private work. Any grant-funded use must follow the award's approved scope.
