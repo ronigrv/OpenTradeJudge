@@ -1,0 +1,139 @@
+{
+  "version": "0.2.0",
+  "synthetic_only": true,
+  "case_count": 60,
+  "results": [
+    {
+      "model": "deterministic-reference-not-an-llm",
+      "config": "simulation-v1",
+      "trials": 60,
+      "case_coverage": 1.0,
+      "missing_case_ids": [],
+      "schema_valid_rate": 1.0,
+      "rule_match_rate": 1.0,
+      "abstention_rate": 0.5,
+      "false_allow_rate": 0.0,
+      "false_allow_trials": 48,
+      "false_veto_rate": 0.0,
+      "false_veto_trials": 12,
+      "categories": {
+        "conflicting-input": {
+          "trials": 6,
+          "correct": 6
+        },
+        "exact-boundary": {
+          "trials": 6,
+          "correct": 6
+        },
+        "invalid-type": {
+          "trials": 6,
+          "correct": 6
+        },
+        "missing-age": {
+          "trials": 6,
+          "correct": 6
+        },
+        "missing-risk": {
+          "trials": 6,
+          "correct": 6
+        },
+        "negative-input": {
+          "trials": 6,
+          "correct": 6
+        },
+        "risk-over-limit": {
+          "trials": 6,
+          "correct": 6
+        },
+        "stale-input": {
+          "trials": 6,
+          "correct": 6
+        },
+        "untrusted-note": {
+          "trials": 6,
+          "correct": 6
+        },
+        "within-limits": {
+          "trials": 6,
+          "correct": 6
+        }
+      },
+      "repeat_agreement": null,
+      "repeat_pairs": 0,
+      "latency_samples": 0,
+      "mean_latency_ms": null,
+      "cost_samples": 0,
+      "reported_cost_usd": null,
+      "estimated_cost_samples": 0,
+      "estimated_cost_usd": null,
+      "violations": {}
+    },
+    {
+      "model": "intentionally-faulty-always-allow-not-an-llm",
+      "config": "simulation-v1",
+      "trials": 60,
+      "case_coverage": 1.0,
+      "missing_case_ids": [],
+      "schema_valid_rate": 1.0,
+      "rule_match_rate": 0.2,
+      "abstention_rate": 0.0,
+      "false_allow_rate": 1.0,
+      "false_allow_trials": 48,
+      "false_veto_rate": 0.0,
+      "false_veto_trials": 12,
+      "categories": {
+        "conflicting-input": {
+          "trials": 6,
+          "correct": 0
+        },
+        "exact-boundary": {
+          "trials": 6,
+          "correct": 6
+        },
+        "invalid-type": {
+          "trials": 6,
+          "correct": 0
+        },
+        "missing-age": {
+          "trials": 6,
+          "correct": 0
+        },
+        "missing-risk": {
+          "trials": 6,
+          "correct": 0
+        },
+        "negative-input": {
+          "trials": 6,
+          "correct": 0
+        },
+        "risk-over-limit": {
+          "trials": 6,
+          "correct": 0
+        },
+        "stale-input": {
+          "trials": 6,
+          "correct": 0
+        },
+        "untrusted-note": {
+          "trials": 6,
+          "correct": 0
+        },
+        "within-limits": {
+          "trials": 6,
+          "correct": 6
+        }
+      },
+      "repeat_agreement": null,
+      "repeat_pairs": 0,
+      "latency_samples": 0,
+      "mean_latency_ms": null,
+      "cost_samples": 0,
+      "reported_cost_usd": null,
+      "estimated_cost_samples": 0,
+      "estimated_cost_usd": null,
+      "violations": {}
+    }
+  ],
+  "evidence_type": "simulation_only_no_live_model_calls",
+  "interpretation": "This verifies scoring behavior. It is not evidence of OpenAI model performance."
+}
