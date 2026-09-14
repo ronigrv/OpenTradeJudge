@@ -1,0 +1,5 @@
+{"case_id":"toy-up","model":"handwritten-demo","config":"fixture-v1","action":"buy","confidence":1.0,"justification":"The synthetic increase is 2, greater than 1."}
+{"case_id":"toy-up","model":"handwritten-demo","config":"fixture-v1","action":"buy","confidence":1.0,"justification":"The exercise rule selects buy for a change of 2."}
+{"case_id":"toy-down","model":"handwritten-demo","config":"fixture-v1","action":"sell","confidence":1.0,"justification":"The synthetic change is -2, less than -1."}
+{"case_id":"toy-flat","model":"handwritten-demo","config":"fixture-v1","action":"hold","confidence":1.0,"justification":"A change of exactly 1 does not exceed the threshold."}
+{"case_id":"toy-missing","model":"handwritten-demo","config":"fixture-v1","action":"abstain","confidence":1.0,"justification":"The required input is absent."}
