@@ -8,3 +8,4 @@ report.json
 private/
 local-data/
 *.log
+runs/
